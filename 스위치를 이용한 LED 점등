@@ -121,3 +121,163 @@ int main(void)
 }
 
 
+/* 스위치 누름시 LED 점등 변환(채터링 있음)*/
+char circleShiftLeft(char pattern)
+{
+	char newPattern = ((pattern << 1) | (pattern >>7));
+	return newPattern;
+}
+
+
+int main()
+{
+	DDRA=0xff;				//출력
+	DDRD &= ~(1<<PIND0);    //입력 설정
+	PORTD |= (1<<PIND0);    //버튼
+	char pattern = 0x01;
+	PORTA=pattern;
+	
+	while (1)
+	{
+		if(~PIND &(1 << PINE0))
+		{
+			pattern = circleShiftLeft(pattern);
+			PORTA = pattern;
+			_delay_ms(100);
+		}
+	}
+}
+
+
+
+/* 스위치 누름시 LED 점등 변환2(채터링 잡아주기)*/
+char circleShiftLeft(char pattern)
+{
+	char newPattern = ((pattern << 1) | (pattern >>7));
+	return newPattern;
+}
+
+int main()
+{
+	DDRA = 0xff;			// 출력
+	DDRD &= ~(1 << PIND0);	// 입력 설정
+	PORTD |= (1 << PIND0);  // 버튼
+	char pattern = 0x01;
+	PORTA = pattern;
+	
+	char stateCurrent = 0;
+	char statePrevious;
+	
+	while(1)
+	{
+		stateCurrent = !(PIND & (1 << PINA0));		// 버튼 상태 읽어오기
+		if(stateCurrent == 1 && statePrevious == 0)
+		{
+			_delay_ms(50);
+			pattern = circleShiftLeft(pattern);
+			PORTA = pattern;
+			
+		}
+		statePrevious = stateCurrent;
+	}
+}
+
+
+
+
+/* 스위치 누름시 LED 점등 변환3(채터링 없애는 코드)*/
+char circleShiftLeft(char pattern)
+{
+	char newPattern = ((pattern << 1) | (pattern >>7));
+	return newPattern;
+}
+
+int getbuttonstate(void)
+{
+	if (!(PIND & (1<<PIND0)) == 1)
+	{
+		_delay_ms(10);
+		
+		if (!(PIND & (1<<PIND0)) == 1)
+		{
+			return 1;
+		}
+		
+	}
+	return 0;
+}
+
+
+int main()
+{
+	DDRA = 0xff;			// 출력
+	DDRD &= ~(1 << PIND0);	// 입력 설정
+	PORTD |= (1 << PIND0);  // 버튼
+	char pattern = 0x01;
+	PORTA = pattern;
+	
+	char stateCurrent = 0;
+	char statePrevious;
+	
+	while(1)
+	{
+		stateCurrent = getbuttonstate();		// 버튼 상태 읽어오기
+		if(stateCurrent == 1 && statePrevious == 0)
+		{
+			pattern = circleShiftLeft(pattern);
+			PORTA = pattern;
+			
+		}
+		statePrevious = stateCurrent;
+	}
+}
+
+
+
+/* 스위치 누름시 LED 점등(구조체 이용) */
+#include <stdint.h>		// c언어에서 정수형 크기를 보장하는 표준헤더 파일
+
+#define OUTPUT_PIN 0
+#define INPUT_PIN 0
+
+struct port
+	{
+		volatile uint8_t *portresister;		// 포트 레지스터의 포인터
+		volatile uint8_t *ddrresister;		// 데이터 방향 레지스터의 포인터
+		volatile uint8_t *pinresister;		// 입력 풀업 레지스터의 포인터
+		uint8_t pinNum;						// 해당 포트의 핀번호
+	};
+	
+struct port outputport = {&PORTA, &DDRA, &PIND, OUTPUT_PIN}; // 출력 구조체 초기화 해줌
+struct port inputport = {&PORTD, &DDRD, &PIND, INPUT_PIN};	 // 입력 구초체 초기화 
+
+
+int main(void)
+{
+	 출력용 포트를 출력 모드로 설정
+	*(outputport. ddrresister) |= (1 << outputport.pinNum);
+	
+	 입력용 포트를 입력 모드로 설정
+	*(inputport.ddrresister)&= ~( 1 << inputport.pinNum);
+	
+	입력용 포트에 풀업저항 사용 설정
+	*(inputport.portresister) |= ( 1<< inputport.pinNum);
+	
+	
+	
+	while(1)
+	{
+		if(!(*(inputport.pinresister)&(1 << inputport.pinNum)))
+		{
+			*(outputport.portresister) |= ( 1 << outputport.pinNum);
+		}
+		else
+		{
+			*(outputport.portresister) &= ~( 1 << outputport.pinNum);
+		}
+	}
+	
+}
+
+	
+

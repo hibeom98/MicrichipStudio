@@ -1,32 +1,42 @@
-
-/*main*/
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>	// 인터럽트를 사용하기 위한 인클루드 함수
 #include "driver/FND.h"
 
+uint16_t counter = 0;
+volatile int cnt;
+
 ISR(TIMER0_OVF_vect) // Interrut Service Routine, 현재의 cs값에서 1.024ms 간격으로 실행
 {
-	FND_ISR_Display(); // 타이머 인터럽트 발생 시 FND를 표시하는 함수
+	
+	cnt++;
+	if (cnt==100)
+	{
+		FND_setFndDisplayData(counter++);	// FND에 표시할 함수
+		cnt = 0;
+	}
+	
+	
 }
 
 
 int main(void)
 {
 	FND_init();
-	sei();					// 글로벌 인터럽트 인에이블 // 디스에이블 cli()
 	
-	uint16_t counter = 0;
+	sei();						// 글로벌 인터럽트 인에이블 // 디스에이블 cli()
+	
 	
     while (1) 
     {
-		FND_setFndDisplayData(counter++); // FND에 표시할 데이터 함수
-		_delay_ms(100);
+		FND_ISR_Display();		// 타이머 인터럽트 발생 시 FND 를 표시하는 함수
     }
 }
 
-/*h파일/
+
+
+/* h 파일 */ 
 
 #ifndef FND_H_
 #define FND_H_
@@ -55,7 +65,9 @@ void FND_ISR_Display();						// 타이머 인터럽트 발생 시 FND를 표시�
 
 #endif /* FND_H_ */
 
-/*C파일*/
+
+/* c 파일 */
+
 #include "FND.h"
 
 uint16_t fndDisplayData = 0;
@@ -64,6 +76,7 @@ void FND_init()
 {
 	
 	TCCR0 |= (1 << CS02) |(0 << CS01) |(0 << CS00); // 타이머, 카운트 동작설정, 1/64 분주비
+	TCNT0 = 6;
 	TIMSK |= (1 << TOIE0); //Timer/Counter Overflow Interrupt Enable
 	FND_DIGIT_DDR |= (1<< FND_DIGIT_1) | (1<<FND_DIGIT_2) | (1<<FND_DIGIT_3) |( 1<< FND_DIGIT_4); // FND 디지트핀을 출력으로 설정
 	FND_DATA_DDR = 0xff;	// 데이터핀 출력 설정

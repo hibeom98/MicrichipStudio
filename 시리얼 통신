@@ -1,0 +1,45 @@
+#define F_CPU 16000000UL
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+
+void UART0_init(void);
+void UART0_transmit(char data);//UART가 2개인데 그 중에서 우리는 0번을 쓸 꺼라서 0을 붙인다.
+unsigned char UART0_receive(void);
+
+//초기화 하는 함수                   //데이터 시트 191p
+void UART0_init(void)
+{
+	UBRR0H = 0x00;
+	UBRR0L = 207;   //2배속 모드로 설정
+	
+	UCSR0A |= (1<<U2X0);  //비동기, 8비트, 패리티없음, 1비트 정지 (stop 비트는 1비트로 보내준다.)
+	//UCSR0C |= 0x06;
+	UCSR0B |= (1<<RXEN0);   //RX Complete Interrupt Enable
+	UCSR0B |= (1<<TXEN0);  //TX Complete Interrupt Enable
+}
+
+void UART0_transmit(char data)
+{
+	while ( !(UCSR0A & (1<<UDRE0))); //송신 가능 대기, UDR이 비어있는지?
+	
+	UDR0 = data;   //데이터 전송
+	
+}
+unsigned char UART0_receive(void)
+{
+	while ( !(UCSR0A & (1<<RXC0))); //수신대기
+	return UDR0;  //실질적으로 데이터에 드나드는 것
+	
+	
+}
+
+
+int main(void)
+{
+	UART0_init();
+	while (1)
+	{
+		UART0_transmit(UART0_receive());   //보냄과 동시에 받는다
+	}
+}

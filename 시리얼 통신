@@ -10,10 +10,12 @@ unsigned char UART0_receive(void);
 //초기화 하는 함수                   //데이터 시트 191p
 void UART0_init(void)
 {
-	UBRR0H = 0x00;
-	UBRR0L = 207;   //2배속 모드로 설정
+	UBRR0H = 0x00	// UART0을 사용하기 위한 레지스터;
+	UBRR0L = 207;   // 2배속 모드로 설정
 	
-	UCSR0A |= (1<<U2X0);  //비동기, 8비트, 패리티없음, 1비트 정지 (stop 비트는 1비트로 보내준다.)
+	UCSR0A |= (1<<U2X0);  //비동기, 8비트, 패리티없음, 1비트 정지 (stop 비트는 1비트로 보내준다.), 시리얼 통신의 상태를 확인하고 통신 과정을 제어하기 위한 레지스터 중 하나,
+	// 2배속 모드 설정 
+	
 	//UCSR0C |= 0x06;
 	UCSR0B |= (1<<RXEN0);   //RX Complete Interrupt Enable
 	UCSR0B |= (1<<TXEN0);  //TX Complete Interrupt Enable
@@ -43,3 +45,4 @@ int main(void)
 		UART0_transmit(UART0_receive());   //보냄과 동시에 받는다
 	}
 }
+

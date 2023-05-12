@@ -1,0 +1,106 @@
+#include <avr/io.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+#include <avr/interrupt.h>
+#include <stdio.h>
+#include "UART.h"
+
+// 출력 스트림 설정<stdio.h>에 있는 표준 입출력
+FILE OUTPUT = FDEV_SETUP_STREAM(UART_transmit, NULL, _FDEV_SETUP_WRITE);
+
+char rxBuff[100] = {0,};
+uint8_t rxflag = 0;
+
+ISR(USART0_RX_vect)
+{
+	static uint8_t rxHead = 0;  // 수신된 데이터의 인덱스
+	uint8_t rxData = UDR0;		// 수신된 데이터
+	if (rxData == '\n' || rxData =='\r') // 데이터의 마지막이 개행이나 리턴이면
+	{
+		rxBuff[rxHead] = '\0'; // 수신된 문자열 마지막에 NULL 추가
+		rxHead = 0;			   //인덱스 초기화
+		rxflag = 1;			   // 문자열 수신 플래그 설정
+	}
+	
+	else // 아니면 계속 다음 문자 받음
+	{
+		rxBuff[rxHead] = rxData; // 버퍼에 수신된 데이터 추가
+		rxHead++;				 // 인덱스 증가
+	}
+}
+
+int main(void)
+{
+	UART_init();				 // 초기화
+	uint8_t rxData;
+	stdout = &OUTPUT;
+	
+	sei();
+	
+    while (1) 
+    {
+		if (rxflag == 1)		// 문자열 수신이 완료 되면
+		{
+			rxflag = 0;			//	프래그 초기화
+			printf(rxBuff);		// 수신된 문자열 출력
+		}
+    }
+}
+
+/* c 파일 */
+
+# include "UART.h"
+
+void UART_init(void)
+{
+	UBRR0H = 0x00;
+	UBRR0L = 0xCF;					 //207;
+
+	UCSR0A |= (1<<U2X0);			 //비동기, 8비트, 패리티없음, 1비트 정지 (stop 비트는 1비트로 보내준다.), 시리얼 통신의 상태를 확인하고 통신 과정을 제어하기 위한 레지스터 중 하나,
+									 // 2배속 모드 설정
+
+									 //UCSR0C |= 0x06;
+	UCSR0B |= (1<<RXEN0);			 //RX Complete Interrupt Enable
+	UCSR0B |= (1<<TXEN0);			 //TX Complete Interrupt Enable
+	
+	UCSR0B |= (1 << RXCIE0);
+}
+
+void UART_transmit(char data)
+{
+	while ( !(UCSR0A & (1<<UDRE0))); //송신 가능 대기, UDR이 비어있는지?
+	
+	UDR0 = data;					 //데이터 전송
+}
+
+unsigned char UART_receive(void)
+{
+	while ( !(UCSR0A & (1<<RXC0))); //수신대기
+			  
+}
+
+void UART_print_string(char *str)
+{
+	for (int i = 0 ; str [i]; i++)
+	{
+		UART_transmit(str[i]);
+	}
+}
+
+/* h 파일 */
+
+
+#include <avr/io.h>
+
+#ifndef UART_H_
+#define UART_H_
+
+#define FALSE 0
+#define TRUE 1
+
+void UART_init(void);
+void UART_transmit(char data);
+unsigned char UART_receive();
+void UART_print_string(char *str);
+
+#endif /* UART_H_ */

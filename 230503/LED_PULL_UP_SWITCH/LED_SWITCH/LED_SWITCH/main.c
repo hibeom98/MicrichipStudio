@@ -1,0 +1,282 @@
+#define F_CPU 16000000UL
+#include <avr/io.h>
+#include <util/delay.h>
+
+
+
+/* 내부 풀업 저항 사용 (스위치 1개) */
+//int main(void)
+//{
+    //
+	//DDRA = 0xff;			// PORTA를 출력으로 설정
+	//DDRD &= ~(1 << 0);		//PORAD의 0번핀을 입력으로 설정   
+	//PORTD |= (1 << 0);		//PORTD의 0번핀에 풀업 저항 활성화
+	//while (1)
+	//{
+		//if(PIND & (1 << 0))		// PORTD의 0번핀이 눌리면 else로 빠짐
+		//{
+			//PORTA &= ~(1 << 0);  //PORTA의 0번핀을 LOW로 설정
+		//}
+		//
+		//else                   // PORTD의 0번핀이 눌리지 않으면
+		//{
+			//PORTA |=(1 << 0);   // PORTA의 0번핀을 HIGH(1)로 설정
+		//}
+		//
+		//
+	//}
+//}
+
+
+/* 외부 풀업 저항 사용 (스위치 1개) */
+//int main(void)
+//{
+	//
+	//DDRA = 0xff;			// PORTA를 출력으로 설정
+	//DDRD &= ~(1 << 1);		//PORTD의 1번핀을 입력으로 설정
+	//PORTD |= (1 << 1);		//PORTD의 1번핀에 풀업 저항 활성화
+	//while (1)
+	//{
+		//if(PIND & (1 << 1))		// PORTD의 1번핀이 눌리면 else로 빠짐
+		//{
+			//PORTA &= ~(1 << 1);  //PORTA의 1번핀을 LOW로 설정
+		//}
+		//
+		//else                   // PORTD의 1번핀이 눌리지 않으면
+		//{
+			//PORTA |=(1 << 1);   // PORTA의 1번핀을 HIGH(1)로 설정
+		//}
+	//}
+//}
+
+
+
+/* 외부 풀다운 저항 사용 (스위치 1개) */
+//int main(void)
+//{
+	//
+	//DDRA = 0xff;			// PORTA를 출력으로 설정
+	//DDRD &= ~(1 << 2);		//PORTD의 1번핀을 입력으로 설정
+	//
+	//while (1)
+	//{
+		//if(PIND & (1 << 2))		// PORTD의 3번핀이 눌리면
+		//{
+			//PORTA |= (1 << 1);  //PORTA의 1번핀을 HIGH로 설정
+		//}
+		//else                   // PORTD의 3번핀이 눌리지 않으면
+		//{
+			//PORTA &= ~(1 << 1);   // PORTA의 1번핀을 HIGH(1)로 설정
+		//}
+	//}
+//}
+//
+//
+
+/* 스위치 3개를 눌렀을 때 점등 (희범) */
+//int main(void)
+//{
+//
+	//DDRA = 0xff;                         // PORTA를 출력으로 설정
+	//DDRD &= 0x00;                          // PORTD의 1~7 입력으로 설정
+	//PORTD |= (1 << 0);                       // PORTD의 0번핀에 풀업 저항 활성화
+//
+	//while (1)
+	//{
+		//if( (PIND & (1 << 0)) | (PIND & (1 << 1)) | (!(PIND & (1 << 2))) )    // PORTD의 3번핀이 눌리면 else로
+		//{
+			//PORTA &= ~(1 << 0);												  // LED가 켜지지 않음
+		//}
+//
+		//else
+		//{
+			//PORTA |= (1 << 0);												  // LED 점등
+		//}					
+	//}
+//}
+
+
+/* 스위치 3개를  사용한 경우(갓인) */
+
+//int main(void)
+//{
+	//
+	//while(1)
+	//{
+		//ddra= 0xff;
+		//ddrd &= ~(1<<0) | ~(1<<1) | ~(1<<2);
+		//portd |= (1<<0);
+		//if (
+		//
+		//(~pind & (1<<0)) && (~pind& (1<<1)) && (pind & (1<<2))
+		//)
+		//{
+			//porta |= (1<<0);
+		//}
+		//else
+		//{
+			//porta &= 0;
+		//}
+	//}
+//}
+
+
+/* 스위치 누름시 LED 점등 변환(채터링 있음)*/
+//char circleShiftLeft(char pattern)
+//{
+	//char newPattern = ((pattern << 1) | (pattern >>7));
+	//return newPattern;
+//}
+//
+//
+//int main()
+//{
+	//DDRA=0xff;				//출력
+	//DDRD &= ~(1<<PIND0);    //입력 설정
+	//PORTD |= (1<<PIND0);    //버튼
+	//char pattern = 0x01;
+	//PORTA=pattern;
+	//
+	//while (1)
+	//{
+		//if(~PIND &(1 << PINE0))
+		//{
+			//pattern = circleShiftLeft(pattern);
+			//PORTA = pattern;
+			//_delay_ms(100);
+		//}
+	//}
+//}
+
+
+
+/* 스위치 누름시 LED 점등 변환2(채터링 잡아주기)*/
+//char circleShiftLeft(char pattern)
+//{
+	//char newPattern = ((pattern << 1) | (pattern >>7));
+	//return newPattern;
+//}
+//
+//int main()
+//{
+	//DDRA = 0xff;			// 출력
+	//DDRD &= ~(1 << PIND0);	// 입력 설정
+	//PORTD |= (1 << PIND0);  // 버튼
+	//char pattern = 0x01;
+	//PORTA = pattern;
+	//
+	//char stateCurrent = 0;
+	//char statePrevious;
+	//
+	//while(1)
+	//{
+		//stateCurrent = !(PIND & (1 << PINA0));		// 버튼 상태 읽어오기
+		//if(stateCurrent == 1 && statePrevious == 0)
+		//{
+			//_delay_ms(50);
+			//pattern = circleShiftLeft(pattern);
+			//PORTA = pattern;
+			//
+		//}
+		//statePrevious = stateCurrent;
+	//}
+//}
+
+
+
+
+/* 스위치 누름시 LED 점등 변환3(채터링 없애는 코드)*/
+//char circleShiftLeft(char pattern)
+//{
+	//char newPattern = ((pattern << 1) | (pattern >>7));
+	//return newPattern;
+//}
+//
+//int getbuttonstate(void)
+//{
+	//if (!(PIND & (1<<PIND0)) == 1)
+	//{
+		//_delay_ms(10);
+		//
+		//if (!(PIND & (1<<PIND0)) == 1)
+		//{
+			//return 1;
+		//}
+		//
+	//}
+	//return 0;
+//}
+//
+//
+//int main()
+//{
+	//DDRA = 0xff;			// 출력
+	//DDRD &= ~(1 << PIND0);	// 입력 설정
+	//PORTD |= (1 << PIND0);  // 버튼
+	//char pattern = 0x01;
+	//PORTA = pattern;
+	//
+	//char stateCurrent = 0;
+	//char statePrevious;
+	//
+	//while(1)
+	//{
+		//stateCurrent = getbuttonstate();		// 버튼 상태 읽어오기
+		//if(stateCurrent == 1 && statePrevious == 0)
+		//{
+			//pattern = circleShiftLeft(pattern);
+			//PORTA = pattern;
+			//
+		//}
+		//statePrevious = stateCurrent;
+	//}
+//}
+
+// DDRx 방향 : 입력(0) 과 출력(1) 모드 0000 0001 : 0번핀을 출력모드로 설정이다. DDRA = 0000 0001; / PORTx PORTA = 0000 0001; 0번핀에서 HIGH 출력 / PINx PINA = 0000 0010; 1번핀으로 HIGH 입력이 들어왔다
+
+/* 스위치 누름시 LED 점등(구조체 이용) */
+#include <stdint.h>		// c언어에서 정수형 크기를 보장하는 표준헤더 파일
+
+#define OUTPUT_PIN 0
+#define INPUT_PIN 0
+
+struct port
+	{
+		volatile uint8_t *portresister;		// 포트 레지스터의 포인터
+		volatile uint8_t *ddrresister;		// 데이터 방향 레지스터의 포인터
+		volatile uint8_t *pinresister;		// 입력 풀업 레지스터의 포인터
+		uint8_t pinNum;						// 해당 포트의 핀번호
+	};
+	
+struct port outputport = {&PORTA, &DDRA, &PIND, OUTPUT_PIN}; // 출력 구조체 초기화 해줌 , [&PORTA, &DDRA, &PIND, OUTPUT_PIN] -> 출력 방향 입력 순
+struct port inputport = {&PORTD, &DDRD, &PIND, INPUT_PIN};	 // 입력 구초체 초기화 
+
+
+int main(void)
+{
+	// 출력용 포트를 출력 모드로 설정
+	*(outputport. ddrresister) |= (1 << outputport.pinNum);		// 0000 0000 | 0000 0001 -> 0000 0001	포트 A의 0번핀에 1값이 들어와서 출력 모드 설정 
+	// 입력용 포트를 입력 모드로 설정
+	*(inputport.ddrresister)&= ~( 1 << inputport.pinNum);		// 0000 0001 & 1111 1110 -> 0000 0000   포트 D의 0번핀에 0값이 들어와서 입력 모드 설정
+	
+	//입력용 포트에 풀업저항 사용 설정
+	*(inputport.portresister) |= ( 1<< inputport.pinNum);		// 0000 0000 | 0000 0001 -> 0000 0001	포트 D의 0번핀에 1값이 들어와서 풀업 저항 활성화
+	
+	
+	
+	while(1)
+	{
+		if(!(*(inputport.pinresister)&(1 << inputport.pinNum)))		// 버튼이 안눌렸을 때 : 1111 1110 & 0000 0001 -> 0000 0000 false -> else  /  버튼이 눌렸을 때 : 1111 1111 & 0000 0001 -> 0000 0001 true
+		{
+			*(outputport.portresister) |= ( 1 << outputport.pinNum);// 0000 0000 | 0000 0001 -> 0000 0001
+		}
+		else
+		{
+			*(outputport.portresister) &= ~( 1 << outputport.pinNum);// 0000 0000 & 1111 111
+		}
+	}
+	
+}
+
+	
+

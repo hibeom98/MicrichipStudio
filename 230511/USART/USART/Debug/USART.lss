@@ -1,0 +1,273 @@
+
+USART.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  000001aa  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000136  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000002  00800100  00800100  000001aa  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  000001aa  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001dc  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000038  00000000  00000000  0000021c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   000008e5  00000000  00000000  00000254  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 0000082e  00000000  00000000  00000b39  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000002c9  00000000  00000000  00001367  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000054  00000000  00000000  00001630  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000003e4  00000000  00000000  00001684  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    0000001e  00000000  00000000  00001a68  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000028  00000000  00000000  00001a86  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	45 c0       	rjmp	.+138    	; 0x8c <__ctors_end>
+   2:	00 00       	nop
+   4:	53 c0       	rjmp	.+166    	; 0xac <__bad_interrupt>
+   6:	00 00       	nop
+   8:	51 c0       	rjmp	.+162    	; 0xac <__bad_interrupt>
+   a:	00 00       	nop
+   c:	4f c0       	rjmp	.+158    	; 0xac <__bad_interrupt>
+   e:	00 00       	nop
+  10:	4d c0       	rjmp	.+154    	; 0xac <__bad_interrupt>
+  12:	00 00       	nop
+  14:	4b c0       	rjmp	.+150    	; 0xac <__bad_interrupt>
+  16:	00 00       	nop
+  18:	49 c0       	rjmp	.+146    	; 0xac <__bad_interrupt>
+  1a:	00 00       	nop
+  1c:	47 c0       	rjmp	.+142    	; 0xac <__bad_interrupt>
+  1e:	00 00       	nop
+  20:	45 c0       	rjmp	.+138    	; 0xac <__bad_interrupt>
+  22:	00 00       	nop
+  24:	43 c0       	rjmp	.+134    	; 0xac <__bad_interrupt>
+  26:	00 00       	nop
+  28:	41 c0       	rjmp	.+130    	; 0xac <__bad_interrupt>
+  2a:	00 00       	nop
+  2c:	3f c0       	rjmp	.+126    	; 0xac <__bad_interrupt>
+  2e:	00 00       	nop
+  30:	3d c0       	rjmp	.+122    	; 0xac <__bad_interrupt>
+  32:	00 00       	nop
+  34:	3b c0       	rjmp	.+118    	; 0xac <__bad_interrupt>
+  36:	00 00       	nop
+  38:	39 c0       	rjmp	.+114    	; 0xac <__bad_interrupt>
+  3a:	00 00       	nop
+  3c:	37 c0       	rjmp	.+110    	; 0xac <__bad_interrupt>
+  3e:	00 00       	nop
+  40:	35 c0       	rjmp	.+106    	; 0xac <__bad_interrupt>
+  42:	00 00       	nop
+  44:	33 c0       	rjmp	.+102    	; 0xac <__bad_interrupt>
+  46:	00 00       	nop
+  48:	31 c0       	rjmp	.+98     	; 0xac <__bad_interrupt>
+  4a:	00 00       	nop
+  4c:	2f c0       	rjmp	.+94     	; 0xac <__bad_interrupt>
+  4e:	00 00       	nop
+  50:	2d c0       	rjmp	.+90     	; 0xac <__bad_interrupt>
+  52:	00 00       	nop
+  54:	2b c0       	rjmp	.+86     	; 0xac <__bad_interrupt>
+  56:	00 00       	nop
+  58:	29 c0       	rjmp	.+82     	; 0xac <__bad_interrupt>
+  5a:	00 00       	nop
+  5c:	27 c0       	rjmp	.+78     	; 0xac <__bad_interrupt>
+  5e:	00 00       	nop
+  60:	25 c0       	rjmp	.+74     	; 0xac <__bad_interrupt>
+  62:	00 00       	nop
+  64:	23 c0       	rjmp	.+70     	; 0xac <__bad_interrupt>
+  66:	00 00       	nop
+  68:	21 c0       	rjmp	.+66     	; 0xac <__bad_interrupt>
+  6a:	00 00       	nop
+  6c:	1f c0       	rjmp	.+62     	; 0xac <__bad_interrupt>
+  6e:	00 00       	nop
+  70:	1d c0       	rjmp	.+58     	; 0xac <__bad_interrupt>
+  72:	00 00       	nop
+  74:	1b c0       	rjmp	.+54     	; 0xac <__bad_interrupt>
+  76:	00 00       	nop
+  78:	19 c0       	rjmp	.+50     	; 0xac <__bad_interrupt>
+  7a:	00 00       	nop
+  7c:	17 c0       	rjmp	.+46     	; 0xac <__bad_interrupt>
+  7e:	00 00       	nop
+  80:	15 c0       	rjmp	.+42     	; 0xac <__bad_interrupt>
+  82:	00 00       	nop
+  84:	13 c0       	rjmp	.+38     	; 0xac <__bad_interrupt>
+  86:	00 00       	nop
+  88:	11 c0       	rjmp	.+34     	; 0xac <__bad_interrupt>
+	...
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_clear_bss>:
+  98:	21 e0       	ldi	r18, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	01 c0       	rjmp	.+2      	; 0xa2 <.do_clear_bss_start>
+
+000000a0 <.do_clear_bss_loop>:
+  a0:	1d 92       	st	X+, r1
+
+000000a2 <.do_clear_bss_start>:
+  a2:	a2 30       	cpi	r26, 0x02	; 2
+  a4:	b2 07       	cpc	r27, r18
+  a6:	e1 f7       	brne	.-8      	; 0xa0 <.do_clear_bss_loop>
+  a8:	18 d0       	rcall	.+48     	; 0xda <main>
+  aa:	43 c0       	rjmp	.+134    	; 0x132 <_exit>
+
+000000ac <__bad_interrupt>:
+  ac:	a9 cf       	rjmp	.-174    	; 0x0 <__vectors>
+
+000000ae <UART0_init>:
+unsigned char UART0_receive(void);
+volatile uint8_t isIdle;
+//초기화 하는 함수                    //데이터 시트 191p
+void UART0_init(void)
+{
+	UBRR0H = 0x00;		            // 2개의 8비트 레지스터를 조합한 16비트 레지스터, UART0을 사용하기 위한 레지스터
+  ae:	10 92 90 00 	sts	0x0090, r1	; 0x800090 <__TEXT_REGION_LENGTH__+0x7e0090>
+	UBRR0L = 207;   	     // 2배속 모드로 설정, 왜냐하면 보율을 9600으로 잡았기 떄문에
+  b2:	8f ec       	ldi	r24, 0xCF	; 207
+  b4:	89 b9       	out	0x09, r24	; 9
+	
+	UCSR0A |= (1<<U2X0);  	     //비동기, 8비트, 패리티없음, 1비트 정지 (stop 비트는 1비트로 보내준다.), 시리얼 통신의 상태를 확인하고 통신 과정을 제어하기 위한 레지스터 중 하나,
+  b6:	8b b1       	in	r24, 0x0b	; 11
+  b8:	82 60       	ori	r24, 0x02	; 2
+  ba:	8b b9       	out	0x0b, r24	; 11
+	// 2배속 모드 설정
+	
+	//UCSR0C |= 0x06;            // 데이터 형식 및 통신 방법을 결정하기 위해 사용
+	UCSR0B |= (1<<RXEN0);        // 수신완료 인터럽트 발생을 허용
+  bc:	8a b1       	in	r24, 0x0a	; 10
+  be:	80 61       	ori	r24, 0x10	; 16
+  c0:	8a b9       	out	0x0a, r24	; 10
+	UCSR0B |= (1<<TXEN0);        // 송신 완료 인터럽트 발생을 허용
+  c2:	8a b1       	in	r24, 0x0a	; 10
+  c4:	88 60       	ori	r24, 0x08	; 8
+  c6:	8a b9       	out	0x0a, r24	; 10
+  c8:	08 95       	ret
+
+000000ca <UART0_transmit>:
+}
+
+void UART0_transmit(char data)		// UDRE0 비트 사용
+{
+	while ( !(UCSR0A & (1<<UDRE0))); //송신 가능 대기, 송신 버퍼가 비어 데이터를 받을 준비가 되어 있는지
+  ca:	5d 9b       	sbis	0x0b, 5	; 11
+  cc:	fe cf       	rjmp	.-4      	; 0xca <UART0_transmit>
+	
+	UDR0 = data;   					 //데이터 전송
+  ce:	8c b9       	out	0x0c, r24	; 12
+  d0:	08 95       	ret
+
+000000d2 <UART0_receive>:
+	
+}
+unsigned char UART0_receive(void)
+{
+	while ( !(UCSR0A & (1<<RXC0)));  // 버퍼에 읽지 않는 문자가 있으면 1, 버퍼가 비어있으면 0.
+  d2:	5f 9b       	sbis	0x0b, 7	; 11
+  d4:	fe cf       	rjmp	.-4      	; 0xd2 <UART0_receive>
+	return UDR0;  					//실질적으로 데이터에 드나드는 것
+  d6:	8c b1       	in	r24, 0x0c	; 12
+	
+	
+}
+  d8:	08 95       	ret
+
+000000da <main>:
+
+
+int main(void)
+{
+	DDRA = 0xff;
+  da:	8f ef       	ldi	r24, 0xFF	; 255
+  dc:	8a bb       	out	0x1a, r24	; 26
+	PORTA = 0x00;
+  de:	1b ba       	out	0x1b, r1	; 27
+	uint8_t data;
+	
+	UART0_init();
+  e0:	e6 df       	rcall	.-52     	; 0xae <UART0_init>
+	while (1)
+	{	
+		UART0_transmit(UART0_receive());   //보냄과 동시에 받는다
+  e2:	f7 df       	rcall	.-18     	; 0xd2 <UART0_receive>
+  e4:	f2 df       	rcall	.-28     	; 0xca <UART0_transmit>
+		data = UART0_receive();
+  e6:	f5 df       	rcall	.-22     	; 0xd2 <UART0_receive>
+  e8:	c8 2f       	mov	r28, r24
+  ea:	ef df       	rcall	.-34     	; 0xca <UART0_transmit>
+		UART0_transmit(data);
+  ec:	c1 36       	cpi	r28, 0x61	; 97
+  ee:	11 f4       	brne	.+4      	; 0xf4 <main+0x1a>
+		static int led = 0;
+		
+		
+		
+		if (data =='a')
+  f0:	8f ef       	ldi	r24, 0xFF	; 255
+  f2:	8b bb       	out	0x1b, r24	; 27
+		{
+			PORTA = 0xff;
+  f4:	c2 36       	cpi	r28, 0x62	; 98
+  f6:	09 f4       	brne	.+2      	; 0xfa <main+0x20>
+		}
+		
+		if (data == 'b')
+  f8:	1b ba       	out	0x1b, r1	; 27
+  fa:	c3 36       	cpi	r28, 0x63	; 99
+		{
+			PORTA = 0x00;
+  fc:	91 f7       	brne	.-28     	; 0xe2 <main+0x8>
+		}	
+		
+		
+		if(data == 'c')
+  fe:	81 e0       	ldi	r24, 0x01	; 1
+ 100:	90 e0       	ldi	r25, 0x00	; 0
+		{
+			//UDR0 = UART0_receive();
+			//if(UDR0 !='c') break;   //보냄과 동시에 받는다
+			PORTA = (1 << led);
+ 102:	00 90 00 01 	lds	r0, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 106:	02 c0       	rjmp	.+4      	; 0x10c <main+0x32>
+ 108:	88 0f       	add	r24, r24
+ 10a:	99 1f       	adc	r25, r25
+ 10c:	0a 94       	dec	r0
+ 10e:	e2 f7       	brpl	.-8      	; 0x108 <main+0x2e>
+ 110:	8b bb       	out	0x1b, r24	; 27
+ 112:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+			led++;
+ 116:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
+ 11a:	01 96       	adiw	r24, 0x01	; 1
+ 11c:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
+ 120:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 124:	08 97       	sbiw	r24, 0x08	; 8
+ 126:	e9 f6       	brne	.-70     	; 0xe2 <main+0x8>
+			
+			if (led == 8)
+ 128:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
+			{
+				led = 0;
+ 12c:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 130:	d8 cf       	rjmp	.-80     	; 0xe2 <main+0x8>
+
+00000132 <_exit>:
+ 132:	f8 94       	cli
+
+00000134 <__stop_program>:
+ 134:	ff cf       	rjmp	.-2      	; 0x134 <__stop_program>

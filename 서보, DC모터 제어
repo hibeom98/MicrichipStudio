@@ -1,0 +1,195 @@
+#include <avr/io.h>
+#define F_CPU 16000000UL
+#include <util/delay.h>
+#include <stdio.h>
+#include <avr/interrupt.h>   
+
+/* 서보 모터 제어*/
+//void servostop();
+//void servorun(uint8_t degree);
+//
+//int main(void)
+//{
+    //DDRE |= (1<<1)|(1<<2);
+	//// TCNT3, OC3A, 16비트 FAST PWM, 비반전 모드
+	//// 분주기 64, TOP 값 ICR이용
+	//
+	//// 분주비부터 64 == CS, 분주비는 B 레지스터에 있다.
+	//TCCR3B |= (1<<CS31) | (1<<CS30);
+	//
+	//
+	//// 비반전 모드
+	//TCCR3A |= (1<<COM3A1); // | (0<<COM3A0);
+	//
+	//// 16비트 fast PWM 출력
+	//
+	//TCCR3B |= (1<<WGM33) | (1<<WGM32);
+	//TCCR3A |= (1<<WGM31);
+	//ICR3 = 5000-1; // 컴퓨터는 0부터 세므로 4999까지 설정해줘야 한다.
+	//
+	////OCR3A = 1000;
+	//
+    //while (1)
+    //{
+		//servorun(0);
+		//_delay_ms(1000);
+		//servorun(45);
+		//_delay_ms(1000);
+		//servorun(90);
+		//_delay_ms(1000);
+		//servorun(180);
+		//_delay_ms(1000);
+    //}
+//}
+//
+//void servostop()
+//{
+	//
+//}
+//
+//void servorun(uint8_t degree)
+//{
+	//uint16_t degValue;
+	//TCCR3A |= (1<<COM3A1);  //PWM 출력 설정
+	//if (degree < 0)
+	//{
+		//degree = 0;
+	//}
+	//else if (degree > 180)
+	//{
+		//degree = 180;
+	//}
+	//degValue = (uint16_t)((degree/180.0)*500+10025);
+	//OCR3A = degValue;
+//}
+
+
+
+
+
+/* DC 모터 제어*/
+//#define F_CPU 16000000UL
+//#include <avr/io.h>
+//#include <util/delay.h>
+//
+//void servoStop();
+//void servoRun(uint16_t degree);
+//
+//
+//int main(void)
+//{
+	//DDRE |= (1 << 3) | (1 << 4);
+	//// TCNT3, OC3A, 16비트 FAST PWM, 비반전모드
+	//// 분주비 64, TOP 값 ICR 이용
+//
+	//// 분주비부터 64 == CSn2
+	//TCCR3B |= (0 << CS32) | (1 << CS31) | (1 << CS30);
+//
+	//// 비반전 모드
+	//TCCR3A |= (1 << COM3A1) | (0 << COM3A0);
+//
+	//// 16비트 FAST PWM 8bit 출력 (TOP - 0x00FF)
+	//TCCR3B |= (1 << WGM33) | (1 << WGM32);
+	//TCCR3A |= (1 << WGM31) | (0 << WGM30);
+	//ICR3 = 5000-1; // 20ms
+	//
+//
+	//while (1)
+	//{
+		//servoStop();
+		//_delay_ms(2000);
+		//servoRun(3000);
+		//_delay_ms(2000);
+		//servoStop();
+		//_delay_ms(2000);
+		//servoRun(8000);
+		//_delay_ms(2000);
+		//servoStop();
+		//_delay_ms(2000);
+		//servoReverseRun(7000);
+		//_delay_ms(2000);
+		//servoStop();
+		//_delay_ms(2000);
+	//}
+//}
+//
+//void servoStop()
+//{
+	//TCCR3A |= (1 << COM3A1) | (1 << COM3B1);    // PWM 출력 설정
+	//OCR3A = 0;								    // 핀 E 3번 출력
+	//OCR3B = 0;									// 핀 E 4번 출력
+//}
+//
+//void servoRun(uint16_t degree)
+//{
+	//TCCR3A |= (1 << COM3A1);					// PWM 출력 설정
+	//OCR3A = degree;
+//}
+//
+//void servoReverseRun(uint16_t degree)
+//{
+	//TCCR3A |= (0 << COM3A1) | (1 << COM3B1);   // PWM 출력 설정
+	//OCR3B = degree;
+//}
+
+
+/*DC모터 강사님 */
+
+void pwm_init()
+{
+	// 모드5 : 8비트고속PWM모드 timer 3
+	TCCR3A |= (1 << WGM30);
+	TCCR3B |= (1 << WGM32);
+	
+	// 비반전 모드 TOP: 0xff 비교일치값 : OCR3C : PE5
+	TCCR3A |= (1 << COM3C1);
+	// 분주비 64  16000000/64  ==> 250000HZ(250KHZ)
+	// 256 / 250000 ==> 1.02ms
+	// 127 / 250000 ==> 0.5ms
+	TCCR3B |= ( 1 << CS31)  | (1 << CS30);   // 분주비 64
+	// 1600000HZ / 64분주 ==> 250000HZ (250KHZ)
+	//
+	OCR3C=0;  // PORTE.5
+}
+// ENA : PORTE.5 (OCR3B(PE5) <=== PORTE.4
+// IN1 : PORTE.0
+// IN2 : PORTE.2
+int main(void)
+{
+	DDRE |= ( 1 << 3) | ( 1 << 4) | ( 1 << 5);  // PE.0 PE.2 PE5 입력 모드로 설정
+	
+	pwm_init();
+	
+	// 1) 모터 정지(2초) --> 2) 모터를 정회전(중간속도) 2초 --> 3)모터 정지(2초) --> 4) 모터역회전(중간속도)
+	// 5) 모터역회전(최대속도) : 2초간
+	while (1)
+	{
+		OCR3C=0;
+		PORTE |= 0b00000101;  // 모터정지 : PE0:1 PE2:1
+		_delay_ms(2000);  // 2초간 유지
+		
+		// 정회전 : PE2:0 PE0 1
+		PORTE &= 0b11111011;  // 모터정지 : PE0:1 PE2:0
+		PORTE |= 0b00000001;
+		OCR3C=127;    // 0.5ms 중간속도
+		_delay_ms(2000);  // 2초간 유지
+
+		OCR3C=255;      // max speed
+		_delay_ms(2000);  // 2초간 유지
+		
+		OCR3C=0;
+		PORTE |= 0b00000101;  // 모터정지 : PE0:1 PE2:1
+		_delay_ms(2000);  // 2초간 유지
+		
+		// 역회전 : PE2:1 PE0 0
+		PORTE &= 0b11111110;
+		PORTE |= 0b00000100;
+		
+		OCR3C=127;    // 0.5ms 중간속도
+		_delay_ms(2000);  // 2초간 유지
+
+		OCR3C=255;      // max speed
+		_delay_ms(2000);  // 2초간 유지
+		
+	}
+}

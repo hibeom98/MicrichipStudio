@@ -1,0 +1,61 @@
+#define F_CPU 16000000UL
+#include <avr/io.h>
+#include <util/delay.h>
+
+//주파수 설정
+#define C4  262 //261.63HZ
+#define D4  294 //293.66HZ
+#define E4  330 //329.63HZ
+#define F4  349 //349.23HZ
+#define G4  392 //392.00HZ
+#define A4  440 //440.00HZ
+#define B4  494 //493.88HZ
+#define C5  523 //523.25HZ
+#define PAUSE 0
+#define PRESCALER 8
+
+const int melody[]={C4, D4, E4,F4,G4,A4,B4,C5, PAUSE, PRESCALER};
+
+void music_init()
+{
+	DDRB |= (1<<PORTB6);
+	
+	TCCR1A |= (1<<COM1B0);				// 비교일치 발생시 출력 반전
+	TCCR1B |= (1<<WGM12) | (1<<CS11);
+}
+
+void music_play(const int *pMusic)
+{
+	int num;
+	
+	while (*pMusic)
+	{
+		num = *pMusic;
+		*pMusic++;
+		
+		if (num == PAUSE)
+		{
+			OCR1A = 0; // 재생중지, 듀티사이클 0%
+		}
+		else
+		{
+			// 주파수 계산
+			int ocr_value = F_CPU / 2 / PRESCALER / num;
+			
+			// 주파수 설정
+			OCR1A = ocr_value;
+		}
+		_delay_ms(500);
+	}
+	OCR1A = 0;
+}
+
+int main(void)
+{
+	music_init();
+	while (1)
+	{
+		music_play(melody);
+		_delay_ms(1000);
+	}
+}
